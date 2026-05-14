@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@if (ViewBag.MarathonLinks != null && ViewBag.MarathonLinks.Count != 0)
+{
+    <h4>Марафоны, в которых Вы принимаете участие:</h4>
+    <ul>
+        @foreach (var ml in ViewBag.MarathonLinks)
+        {
+            <li>
+                <a asp-action="ml.ActionName"
+                   asp-route-activeDay="ml.Day"
+                   asp-route-currDay="ml.Day"
+                   asp-route-userId="ml.CurrUserId">
+                    @ml.linkText
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+@if (ViewBag.UpcomingMarathons != null && ViewBag.UpcomingMarathons.Count != 0)
+{
+    <h4>Марафоны, в которых Вы будете принимать участие:</h4>
+    <ul>
+        @foreach (var upcomingMarathon in ViewBag.UpcomingMarathons)
+        {
+            <li>@upcomingMarathon</li>
+        }
+    </ul>
+}
+
+@if (ViewBag.MarathonSeeAchievementsLinks != null && ViewBag.MarathonSeeAchievementsLinks.Count != 0)
+{
+    <h4>Марафоны, которые Вы ведете:</h4>
+    <ul>
+            @foreach (var m in ViewBag.MarathonSeeAchievementsLinks)
+        {
+            <li>
+                <a asp-action="m.ActionName"
+                   asp-route-currDay="m.Day"
+                   asp-route-marathonDateId="m.MarathonDateId">
+                        @m.LinkText
+                </a>
+            </li>
+        }
+    </ul>
+}

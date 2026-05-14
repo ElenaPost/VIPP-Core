@@ -1,0 +1,124 @@
+﻿@model VIPP.Models.SelfEstimationFeedbackToUser
+
+<nav aria-label="Дни">
+    <ul class="pagination">
+        <li class="page-item">@Html.ActionLink("День 1", "SeeAchievementsOfUser", new { activeDay = 1, currDay = ViewBag.CurrDay, userId = ViewBag.UserId, name = ViewBag.Name })</li>
+        <li class="page-item">@Html.ActionLink("2", "SeeAchievementsOfUser", new { activeDay = 2, currDay = ViewBag.CurrDay, userId = ViewBag.UserId, name = ViewBag.Name })</li>
+        <li class="page-item">@Html.ActionLink("3", "SeeAchievementsOfUser", new { activeDay = 3, currDay = ViewBag.CurrDay, userId = ViewBag.UserId, name = ViewBag.Name })</li>
+        <li class="page-item">@Html.ActionLink("4", "SeeAchievementsOfUser", new { activeDay = 4, currDay = ViewBag.CurrDay, userId = ViewBag.UserId, name = ViewBag.Name })</li>
+        <li class="page-item">@Html.ActionLink("5", "SeeAchievementsOfUser", new { activeDay = 5, currDay = ViewBag.CurrDay, userId = ViewBag.UserId, name = ViewBag.Name })</li>
+        <li class="page-item">@Html.ActionLink("6", "SeeAchievementsOfUser", new { activeDay = 6, currDay = ViewBag.CurrDay, userId = ViewBag.UserId, name = ViewBag.Name })</li>
+        <li class="page-item">@Html.ActionLink("7", "SeeAchievementsOfUser", new { activeDay = 7, currDay = ViewBag.CurrDay, userId = ViewBag.UserId, name = ViewBag.Name })</li>
+    </ul>
+</nav>
+
+@if (ViewBag.ActiveDay == ViewBag.CurrDay)
+{
+    <h4>@ViewBag.Name уже:</h4>
+    <ol>
+        @foreach (var achievement in ViewBag.Achievements)
+        {
+            <li>@achievement.Achievement</li>
+        }
+    </ol>
+}
+
+@if (ViewBag.Resume != null)
+{
+    <div>
+        <h4>Рюземе пользователя</h4>
+        <p>@ViewBag.Resume</p>
+    </div>
+}
+
+@using (Html.BeginForm("SeeAchievementsOfUser", "Home", FormMethod.Post, new { @class = "form-horizontal feadback", role = "form", @autocomplete = "off" }))
+{
+    <div>
+        <div class="form-group row achievement">
+            <div class="col-md-8">
+                <input id="Id" type="hidden" value="@(ViewBag.Id == Guid.Empty ? "" : ViewBag.Id)" />
+                <label class="control-label col-md-4 pl-md-0">Фидбек</label>
+                <input id="@ViewBag.UserId" class="required feedback form-control form-control-sm mr-md-0" placeholder="Фидбек" value="@ViewBag.Feedback" />
+                <span class="required-field">Заполнение обязательно</span>
+            </div>
+        </div>
+
+        <div class="form-group row pr-md-0">
+            <div class="col-md-offset-6 col-md-6 px-md-0">
+                <input type="submit" id="Send" class="btn btn-primary btn-sm" value="Отправить">
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.ActiveDay == 7)
+{
+    using (Html.BeginForm("SeeAchievementsOfUser", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", @autocomplete = "off" }))
+    {
+        <div>
+            <div class="form-group row achievement">
+                <div class="col-md-8">
+                    <input id="FinalId" type="hidden" value="@(ViewBag.FinalId == Guid.Empty ? "" : ViewBag.FinalId)" />
+                    <label class="control-label col-md-4 pl-md-0">Финальный фидбек</label>
+                    <input id="@ViewBag.UserId" class="required finalFeedback form-control form-control-sm mr-md-0" placeholder="Финальный фидбек" value="@ViewBag.FinalFeedback" />
+                    <span class="required-field">Заполнение обязательно</span>
+                </div>
+            </div>
+
+            <div class="form-group row pr-md-0">
+                <div class="col-md-offset-6 col-md-6 px-md-0">
+                    <input type="submit" id="FinalSend" class="btn btn-primary btn-sm" value="Отправить">
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Send").on("click", function (e) {
+                e.preventDefault();
+                sendFeadback($("#Id"), $(".feedback").val(), @ViewBag.ActiveDay);
+            });
+
+            $("#FinalSend").on("click", function (e) {
+                e.preventDefault();
+                sendFeadback($("#FinalId"), $(".finalFeedback").val(), 8);
+            });
+
+            function sendFeadback(feedbackIdField, feedback, day) {
+                var feedbackId = feedbackIdField.val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/SeeAchievementsOfUser",
+                    data: {
+                        day: day,
+                        userId: "@ViewBag.UserId",
+                        feedback: feedback,
+                        id: feedbackId
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (feedbackId == "" && data !== null) {
+                            feedbackIdField.val(data.Id);
+                        }
+                        console.log("ok");
+                    }
+                });
+            }
+
+            $("ul.pagination a:contains(" + @ViewBag.ActiveDay + ")").parent("li").addClass("active");
+            for (var i = @ViewBag.CurrDay + 1; i < 8; i++) {
+                var link = $("ul.pagination a:contains(" + i + ")");
+                link.attr("href", "#");
+                link.parent("li").addClass("disabled");
+            }
+        });
+    </script>
+    <script src="~/Scripts/util.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+}

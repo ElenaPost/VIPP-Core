@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Achievements Page";
+}
+
+<h4>Участники:</h4>
+<ul>
+    @foreach (var marathonParticipant in ViewBag.MarathonParticipants)
+    {
+        <li>@marathonParticipant.UserName</li>
+    }
+</ul>
+
+@if (ViewBag.UsersDone != null && ViewBag.UsersDone.Count != 0)
+{
+        <h4>Успехи участников:</h4>
+        <ul>
+            @foreach (var usd in ViewBag.UsersDone)
+            {
+            <li>
+                <a asp-action="usd.SeeAchievementsOfUser"
+                   asp-route-activeDay="usd.CurrDay"
+                   asp-route-currDay="usd.CurrDay"
+                   asp-route-userId="usd.UserId">
+                    @usd.UserName
+                </a>
+            </li>
+            }
+        </ul>
+}

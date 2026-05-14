@@ -1,0 +1,266 @@
+﻿@model VIPP.Models.SelfEstimationCheckList
+
+<nav aria-label="Дни">
+    <ul class="pagination">
+        <li class="page-item">@Html.ActionLink("День 1", "AddAchievement", new { activeDay = 1, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+        <li class="page-item">@Html.ActionLink("2", "AddAchievement", new { activeDay = 2, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+        <li class="page-item">@Html.ActionLink("3", "AddAchievement", new { activeDay = 3, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+        <li class="page-item">@Html.ActionLink("4", "AddAchievement", new { activeDay = 4, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+        <li class="page-item">@Html.ActionLink("5", "AddAchievement", new { activeDay = 5, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+        <li class="page-item">@Html.ActionLink("6", "AddAchievement", new { activeDay = 6, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+        <li class="page-item">@Html.ActionLink("7", "AddAchievement", new { activeDay = 7, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+    </ul>
+</nav>
+
+@using (Html.BeginForm("AddAchievement", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", @autocomplete = "off" }))
+{
+    if(ViewBag.ActiveDay == ViewBag.CurrDay)
+    {
+        var achCount = 0;
+        <div>
+            @foreach (var achievement in ViewBag.currUserAchievements)
+            {
+                ++achCount;
+                <div class="form-group row achievement">
+                    <div class="col-md-8">
+                        <input id="Id" type="hidden" value="@achievement.Id" />
+                        <label for="Achievement" class="control-label col-md-4 pl-md-0">@achCount. Я уже</label>
+                        <input id="Achievement" class="first-field required form-control mr-md-0" placeholder="достижение" value="@achievement.Achievement" />
+                        <span class="required-field">Заполнение обязательно</span>
+                    </div>
+                </div>
+            }
+            @if (ViewBag.currUserAchievements.Count < 100)
+            {
+                AddInputForAchievement(++achCount);
+                if (ViewBag.currUserAchievements.Count < 99)
+                {
+                    AddInputForAchievement(++achCount);
+                }
+            }
+        </div>
+        <div>
+            <div class="form-group row resume" style="display: none">
+                <div class="col-md-8">
+                    <input id="Id" type="hidden" value="@(ViewBag.Id == Guid.Empty ? "" : ViewBag.Id)" />
+                    <label for="Resume" class="control-label col-md-4 pl-md-0">Ваше резюме</label>
+                    <textarea id="Resume" class="required form-control form-control-sm mr-md-0">@ViewBag.Resume</textarea>
+                    <span class="required-field">Заполнение обязательно</span>
+                </div>
+            </div>
+
+            <div class="modal-footer row pr-md-0 btn-send" style="display:none">
+                <div class="col-md-offset-6 col-md-6 px-md-0">
+                    <button type="button" class="btn btn-primary btn-sm">Отправить</button>
+                </div>
+            </div>
+        </div>
+    }
+    else if(ViewBag.ActiveDay < ViewBag.CurrDay)
+    { 
+        <ol>
+            @foreach (var achievement in ViewBag.currUserAchievements)
+            { 
+                <li>Я уже @achievement.Achievement</li>
+            }
+        </ol>
+        <div>
+            <h4>Ваши выводы</h4>
+            <p>@ViewBag.Resume</p>
+        </div>
+    }
+}
+
+<div id="Feedback">
+    @if(ViewBag.Feedback != "")
+    {
+        <h4>Комментарий консультанта</h4>
+        <p>@ViewBag.Feedback</p>
+    }
+</div>
+
+<div id="FinalFeedback">
+    @if(ViewBag.ActiveDay == 7 && ViewBag.FinalFeedback != "")
+    {
+        <h4>Финальный комментарий консультанта</h4>
+        <p>@ViewBag.FinalFeedback</p>
+    }
+</div>
+
+@functions
+{
+    public void AddInputForAchievement(int achCount)
+    {
+        <div class="form-group row achievement">
+            <div class="col-md-8">
+                @Html.HiddenFor(model => model.Id)
+                <label class="control-label col-md-4 pl-md-0">@achCount. Я уже</label>
+                @Html.EditorFor(model => model.Achievement, new { htmlAttributes = new { @class = "required form-control form-control-sm mr-md-0", placeholder = "достижение" } })
+                <span class="required-field">Заполнение обязательно</span>
+            </div>
+        </div>
+    }
+}
+
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="~/Scripts/util.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var activeDay = @ViewBag.ActiveDay;
+
+            function highlightRequired(textField) {
+                if (textField.hasClass("required-empty") && textField.val() != "") {
+                    textField.removeClass("required-empty");
+                }
+            }
+
+            function onchangeHandler(event) {
+                event.preventDefault();
+                var emptyInput = false;
+                var divParrent = $(this).parents("div.col-md-8:first");
+                var achievement = $(this).val();
+                if (achievement == "") {
+                    $(this).addClass("required-empty");
+                    emptyInput = true;
+                }
+                highlightRequired($(this));
+                var inputId = $(divParrent.find("input#Id"));
+                var id = inputId.val();
+                var _url;
+                var _data;
+                if (id == "") {
+                    inputId.addClass("need-val");
+                    _url = "/Home/AddAchievement";
+                    _data = {
+                        userId: "@ViewBag.UserId",
+                        day: activeDay,
+                        serialNumber: +inputId.next().text().match(/\d{1,}/),
+                        achievement: achievement
+                    }
+                }
+                else {
+                    _url = "/Home/EditAchievement";
+                    _data = {
+                        id: id,
+                        userId: "@ViewBag.UserId",
+                        day: activeDay,
+                        achievement: achievement
+                    }
+                }
+
+                if (!emptyInput) {
+                    $.ajax({
+                        type: "POST",
+                        url: _url,
+                        data: _data,
+                        dataType: "json",
+                        success: function (data) {
+                            var inputId = $("input.need-val");
+                            if (inputId.length != 0) {
+                                inputId.val(data.Id);
+                                inputId.removeClass("need-val");
+                            }
+                        }
+                    });
+                }
+
+                var divAchCount = $(".achievement").length;
+                var achIndex = $(".achievement").index($(this).parents("div.form-group:first"));
+                console.log($(".achievement").index($(this).parents("div.form-group:first")) + " - " + divAchCount);
+
+                if (divAchCount < 100) {
+                    if (achIndex == divAchCount - 2) {
+                        var divWrap = document.createElement("div");
+                        divWrap.className = "form-group row achievement";
+                        divWrap.innerHTML = '<div class="col-md-8">@Html.HiddenFor(model => model.Id)<label class="control-label col-md-4 pl-md-0">' + ++divAchCount + '. Я уже</label>@Html.EditorFor(model => model.Achievement, new { htmlAttributes = new { id = "AchievementNew", @class = "required form-control form-control-sm mr-md-0", placeholder = "достижение" } })<span class="required-field">Заполнение обязательно</span></div>';
+                        $(this).parents("form:first").find("div")[0].insertAdjacentElement("beforeend", divWrap);
+                        $('input#AchievementNew:last')[0].className += " achievement" + divAchCount;
+                        $('input.achievement' + divAchCount).on('change', function (event) {
+                            var changeHandler = onchangeHandler.bind(this);
+                            changeHandler(event);
+                        });
+                    }
+                }
+                else if (achIndex == divAchCount - 1) {
+                    showResume();
+                }
+            }
+
+            if ($(".achievement").length == 100 && !$(".resume").is(":visible")) {
+                showResume();
+            }
+
+            function showResume() {
+                $(".resume").show();
+                $(".btn-send").show();
+                $(".btn-send button").on("click", function (e) {
+                    clickHandler();
+                });
+            }
+
+            function clickHandler() {
+                var resumeIdField = $(".resume #Id");
+                var resumeId = resumeIdField.val();
+                var resumeField = $("#Resume");
+                var emptyField = false;
+                var resume = resumeField.val();
+                if (resume == "") {
+                    resumeField.addClass("required-empty");
+                    emptyField = true;
+                }
+                highlightRequired(resumeField);
+
+                if (!emptyField) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/SendResume",
+                        data: {
+                            id: resumeId,
+                            userId: "@ViewBag.UserId",
+                            day: activeDay,
+                            resume: resume
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (resumeId == "") {
+                                resumeIdField.val(data.Id);
+                            }
+                        }
+                    });
+                }
+            }
+
+            $("ul.pagination a:contains(" + activeDay + ")").parent("li").addClass("active");
+            for (var i = @ViewBag.CurrDay + 1; i < 8; i++) {
+                var link = $("ul.pagination a:contains(" + i + ")");
+                link.attr("href", "#");
+                link.parent("li").addClass("disabled");
+            }
+
+            $('input#Achievement').on('change', function (event) {
+                var changeHandler = onchangeHandler.bind(this);
+                changeHandler(event);
+            });
+
+            const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/feedbackHub")
+            .build();
+
+            connection.on("addFeedback", function (text) {
+                $("#Feedback").append("p" + text + "</p>");
+            });
+
+            connection.on("addFinalFeedback", function (text) {
+                $("#FinalFeedback").append("p" + text + "</p>");
+            });
+
+            connection.start().catch(err => console.error(err));
+        });
+    </script>
+}

@@ -1,0 +1,23 @@
+# Папки Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Папки сборки
+bin/
+obj/
+
+# Логи
+*.log
+
+# Конфигурация
+appsettings.Development.json
+
+# Пакеты NuGet
+*.nupkg
+packages/
+
+# Кэш
+*.cache

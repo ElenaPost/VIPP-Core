@@ -1,0 +1,25 @@
+﻿@page
+@model VIPP.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<form method="post">
+    <div>
+        <label asp-for="Input.Email"></label>
+        <input asp-for="Input.Email" />
+    </div>
+    <div>
+        <label asp-for="Input.Password"></label>
+        <input asp-for="Input.Password" type="password" />
+    </div>
+    <div>
+        <label asp-for="Input.ConfirmPassword"></label>
+        <input asp-for="Input.ConfirmPassword" type="password" />
+    </div>
+    <button type="submit">Register</button>
+</form>
+
+<div asp-validation-summary="All"></div>
