@@ -8,14 +8,34 @@
 
 <form method="post">
     <div>
-        <label asp-for="Input.Email"></label>
-        <input asp-for="Input.Email" />
+        <label asp-for="Input.UserName"></label>
+        <input asp-for="Input.UserName" class="form-control" />
+        <span asp-validation-for="Input.UserName" class="text-danger"></span>
     </div>
+
     <div>
         <label asp-for="Input.Password"></label>
         <input asp-for="Input.Password" type="password" />
     </div>
+
+    <div>
+        <label asp-for="Input.RememberMe">
+            <input asp-for="Input.RememberMe" />
+            @Html.DisplayNameFor(m => m.Input.RememberMe)
+        </label>
+    </div>
+
     <button type="submit">Login</button>
 </form>
 
 <div asp-validation-summary="All"></div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("form button").on("click", function (e) {
+                alert("Login button clicked!");
+            });
+        });
+    </script>
+}

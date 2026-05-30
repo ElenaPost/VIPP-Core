@@ -17,10 +17,10 @@
             @foreach (var usd in ViewBag.UsersDone)
             {
             <li>
-                <a asp-action="usd.SeeAchievementsOfUser"
-                   asp-route-activeDay="usd.CurrDay"
-                   asp-route-currDay="usd.CurrDay"
-                   asp-route-userId="usd.UserId">
+                <a asp-action="@usd.SeeAchievementsOfUser"
+                   asp-route-activeDay="@usd.CurrDay"
+                   asp-route-currDay="@usd.CurrDay"
+                   asp-route-userId="@usd.UserId">
                     @usd.UserName
                 </a>
             </li>

@@ -2,13 +2,17 @@
 
 <nav aria-label="Дни">
     <ul class="pagination">
-        <li class="page-item">@Html.ActionLink("День 1", "AddAchievement", new { activeDay = 1, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
-        <li class="page-item">@Html.ActionLink("2", "AddAchievement", new { activeDay = 2, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
-        <li class="page-item">@Html.ActionLink("3", "AddAchievement", new { activeDay = 3, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
-        <li class="page-item">@Html.ActionLink("4", "AddAchievement", new { activeDay = 4, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
-        <li class="page-item">@Html.ActionLink("5", "AddAchievement", new { activeDay = 5, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
-        <li class="page-item">@Html.ActionLink("6", "AddAchievement", new { activeDay = 6, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
-        <li class="page-item">@Html.ActionLink("7", "AddAchievement", new { activeDay = 7, currDay = ViewBag.CurrDay, userId = ViewBag.UserId })</li>
+        @for (int day = 1; day <= 7; day++)
+        {
+            <li class="page-item">
+                <a asp-action="AddAchievement"
+                   asp-route-activeDay="@day"
+                   asp-route-currDay="@ViewBag.CurrDay"
+                   asp-route-userId="@ViewBag.UserId">
+                    @(day == 1 ? "День 1" : day.ToString())
+                </a>
+            </li>
+        }
     </ul>
 </nav>
 

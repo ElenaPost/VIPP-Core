@@ -9,10 +9,10 @@
         @foreach (var ml in ViewBag.MarathonLinks)
         {
             <li>
-                <a asp-action="ml.ActionName"
-                   asp-route-activeDay="ml.Day"
-                   asp-route-currDay="ml.Day"
-                   asp-route-userId="ml.CurrUserId">
+                <a asp-action="@ml.ActionName"
+                   asp-route-activeDay="@ml.Day"
+                   asp-route-currDay="@ml.Day"
+                   asp-route-userId="@ml.CurrUserId">
                     @ml.linkText
                 </a>
             </li>
@@ -38,9 +38,9 @@
             @foreach (var m in ViewBag.MarathonSeeAchievementsLinks)
         {
             <li>
-                <a asp-action="m.ActionName"
-                   asp-route-currDay="m.Day"
-                   asp-route-marathonDateId="m.MarathonDateId">
+                <a asp-action="@m.ActionName"
+                   asp-route-currDay="@m.Day"
+                   asp-route-marathonDateId="@m.MarathonDateId">
                         @m.LinkText
                 </a>
             </li>

@@ -20,10 +20,10 @@ namespace VIPP.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
             if (result.Succeeded)
             {
-                return LocalRedirect("/Index");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -36,11 +36,15 @@ namespace VIPP.Areas.Identity.Pages.Account
     public class LoginInputModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [DataType(DataType.Text)]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
     }
 }
