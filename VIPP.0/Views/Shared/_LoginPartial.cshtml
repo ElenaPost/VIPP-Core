@@ -11,11 +11,17 @@
                 Привет, @UserManager.GetUserName(User)!
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout">Выйти</a>
+        </li>
     }
     else
     {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Войти</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Зарегистрироваться</a>
         </li>
     }
 </ul>

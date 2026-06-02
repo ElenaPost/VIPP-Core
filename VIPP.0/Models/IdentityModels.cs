@@ -12,8 +12,8 @@ namespace VIPP.Models
     // В профиль пользователя можно добавить дополнительные данные, если указать больше свойств для класса ApplicationUser. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=317594.
     public class ApplicationUser : IdentityUser
     {
-        public DateTime DateOfBirth { get; set; }
-        public string Gender { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? Gender { get; set; }
     }
 
     public class Marathon

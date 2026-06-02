@@ -25,12 +25,8 @@ namespace VIPP.Controllers
         [Authorize(Roles = "admin")]
 		public async Task<ActionResult> Index()
 		{
-			if (ModelState.IsValid)
-			{
-				var users = await _context.Users.ToListAsync();
-				return View(users);
-            }
-            return View();
+			var users = await _context.Users.ToListAsync();
+			return View(users);
 		}
 
 		[HttpGet]

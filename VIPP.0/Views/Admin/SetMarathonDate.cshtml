@@ -1,0 +1,48 @@
+﻿@model VIPP.Models.MarathonDate
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Дата старта марафона</h5>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm())
+        {
+            <div>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.MarathonId, ViewBag.Marathons as SelectList, htmlAttributes: new { @class = "first-field form-control form-control-sm" })
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Марафон</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "required form-control form-control-sm", placeholder = "Год" } })
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Год</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Month, new { htmlAttributes = new { @class = "required form-control form-control-sm", placeholder = "Месяц" } })
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Месяц</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Day, new { htmlAttributes = new { @class = "required form-control form-control-sm", placeholder = "День" } })
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">День</label>
+                </div>
+
+                <div class="modal-footer row pr-md-0">
+                    <div class="col-md-offset-6 col-md-6 px-md-0">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model VIPP.Models.Marathon
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Новый марафон</h5>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("AddMarathon", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", @autocomplete = "off" }))
+        {
+            <div>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "first-field required form-control form-control-sm mr-md-0", placeholder = "Название" } })
+                        <span class="required-field">Заполнение обязательно</span>
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Название</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "required form-control form-control-sm", placeholder = "Описание" } })
+                        <span class="required-field">Заполнение обязательно</span>
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Описание</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Cost, new { htmlAttributes = new { @class = "required form-control form-control-sm", placeholder = "Стоимость" } })
+                        <span class="required-field">Заполнение обязательно</span>
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Стоимость</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Count, new { htmlAttributes = new { @class = "required form-control form-control-sm", placeholder = "Количество участников" } })
+                        <span class="required-field">Заполнение обязательно</span>
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Количество участников</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.CountDays, new { htmlAttributes = new { @class = "required form-control form-control-sm", placeholder = "Количество дней" } })
+                        <span class="required-field">Заполнение обязательно</span>
+                    </div>
+                    <label class="control-label col-md-4 pl-md-0">Количество дней</label>
+                </div>
+
+                <div class="modal-footer row pr-md-0">
+                    <div class="col-md-offset-6 col-md-6 px-md-0">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

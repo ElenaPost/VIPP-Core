@@ -7,35 +7,27 @@
 <h2>Login</h2>
 
 <form method="post">
-    <div>
+    <div class="form-group">
         <label asp-for="Input.UserName"></label>
         <input asp-for="Input.UserName" class="form-control" />
         <span asp-validation-for="Input.UserName" class="text-danger"></span>
     </div>
 
-    <div>
+    <div class="form-group">
         <label asp-for="Input.Password"></label>
-        <input asp-for="Input.Password" type="password" />
+        <input asp-for="Input.Password" class="form-control" type="password" />
     </div>
 
-    <div>
-        <label asp-for="Input.RememberMe">
-            <input asp-for="Input.RememberMe" />
-            @Html.DisplayNameFor(m => m.Input.RememberMe)
-        </label>
+    <div class="form-group">
+        <div class="checkbox">
+            <label asp-for="Input.RememberMe">
+                <input asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
+        </div>
     </div>
 
     <button type="submit">Login</button>
 </form>
 
 <div asp-validation-summary="All"></div>
-
-@section scripts {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("form button").on("click", function (e) {
-                alert("Login button clicked!");
-            });
-        });
-    </script>
-}
