@@ -9,6 +9,11 @@
 bin/
 obj/
 
+node_modules/
+
+wwwroot/lib/
+VIPP.0/wwwroot/lib
+
 # Логи
 *.log
 

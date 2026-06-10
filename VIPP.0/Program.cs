@@ -14,7 +14,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .LogTo(Console.WriteLine));
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;

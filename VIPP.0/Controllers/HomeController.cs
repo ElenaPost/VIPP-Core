@@ -168,7 +168,7 @@ namespace VIPP.Controllers
 		{
 			try
 			{
-				if (id == "")
+				if (id == null)
 				{
 					SelfEstimationResumeFromUser selfEstimationResumeFromUser = new SelfEstimationResumeFromUser { Id = Guid.NewGuid(), UserId = userId, Day = day, Resume = resume };
 					if (ModelState.IsValid)

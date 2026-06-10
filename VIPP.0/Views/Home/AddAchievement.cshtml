@@ -4,8 +4,19 @@
     <ul class="pagination">
         @for (int day = 1; day <= 7; day++)
         {
-            <li class="page-item">
-                <a asp-action="AddAchievement"
+            string liClass = "page-item";
+
+            if(day == ViewBag.ActiveDay)
+            {
+                liClass += " active";
+            }
+            else if(day > ViewBag.CurrDay)
+            {
+                liClass += " disabled";
+            }
+
+            <li class="@liClass">
+                <a class="page-link" asp-action="AddAchievement"
                    asp-route-activeDay="@day"
                    asp-route-currDay="@ViewBag.CurrDay"
                    asp-route-userId="@ViewBag.UserId">
@@ -109,10 +120,6 @@
 
 @section scripts
 {
-    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
-    <script src="~/Scripts/util.js"></script>
-    <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -257,11 +264,11 @@
             .build();
 
             connection.on("addFeedback", function (text) {
-                $("#Feedback").append("p" + text + "</p>");
+                $("#Feedback").empty().append("<p>" + text + "</p>");
             });
 
             connection.on("addFinalFeedback", function (text) {
-                $("#FinalFeedback").append("p" + text + "</p>");
+                $("#FinalFeedback").empty().append("<p>" + text + "</p>");
             });
 
             connection.start().catch(err => console.error(err));

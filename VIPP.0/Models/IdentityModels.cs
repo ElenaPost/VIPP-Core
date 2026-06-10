@@ -50,16 +50,18 @@ namespace VIPP.Models
         public string UserId { get; set; }
         public Guid MarathonDateId { get; set; }
     }
+
+    [Table("SelfEstimationCheckLists")]
     public class SelfEstimationCheckList
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
         public int Day { get; set; }
-
         public int SerialNumber { get; set; }
         public string Achievement { get; set; }
     }
 
+    [Table("SelfEstimationResumeFromUsers")]
     public class SelfEstimationResumeFromUser
     {
         public Guid Id { get; set; }
@@ -68,6 +70,7 @@ namespace VIPP.Models
         public string Resume { get; set; }
     }
 
+    [Table("SelfEstimationFeedbackToUsers")]
     public class SelfEstimationFeedbackToUser
     {
         public Guid Id { get; set; }
