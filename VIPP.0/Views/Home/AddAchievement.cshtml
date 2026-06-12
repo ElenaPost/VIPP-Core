@@ -259,10 +259,6 @@
                 changeHandler(event);
             });
 
-            const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/feedbackHub")
-            .build();
-
             connection.on("addFeedback", function (text) {
                 $("#Feedback").empty().append("<p>" + text + "</p>");
             });
@@ -270,8 +266,6 @@
             connection.on("addFinalFeedback", function (text) {
                 $("#FinalFeedback").empty().append("<p>" + text + "</p>");
             });
-
-            connection.start().catch(err => console.error(err));
         });
     </script>
 }

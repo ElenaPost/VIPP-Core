@@ -11,18 +11,17 @@ using VIPP.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
 using VIPP.Hubs;
+using Microsoft.IdentityModel.Tokens;
 
 namespace VIPP.Controllers
 {
 	public class HomeController : Controller
 	{
 		private readonly ApplicationDbContext _context;
-		private readonly IHubContext<FeedbackHub> _hubContext;
 
-        public HomeController(ApplicationDbContext context, IHubContext<FeedbackHub> hubContext)
+        public HomeController(ApplicationDbContext context)
         {
             _context = context;
-            _hubContext = hubContext;
         }
 
         public async Task<ActionResult> Index()
@@ -281,12 +280,11 @@ namespace VIPP.Controllers
 		{
 			try
 			{
-				if (id == "")
+				if(id.IsNullOrEmpty())
 				{
 					SelfEstimationFeedbackToUser selfEstimationFeedbackToUser = new SelfEstimationFeedbackToUser { Id = Guid.NewGuid(), UserId = userId, Day = day, Feedback = feedback };
 					_context.Feedbacks.Add(selfEstimationFeedbackToUser);
 					await _context.SaveChangesAsync();
-					await _hubContext.Clients.Client(userId).SendAsync("addFeedback", feedback);
                     return Json(selfEstimationFeedbackToUser);
 				}
 				else
@@ -296,7 +294,6 @@ namespace VIPP.Controllers
 					selfEstimationFeedbackToUser.Feedback = feedback;
 					_context.Entry(selfEstimationFeedbackToUser).State = EntityState.Modified;
 					await _context.SaveChangesAsync();
-                    await _hubContext.Clients.Client(userId).SendAsync("addFeedback", feedback);
                 }
 			}
 			catch (Exception exc)

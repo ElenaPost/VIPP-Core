@@ -2,6 +2,33 @@
     ViewBag.Title = "Achievements Page";
 }
 
+<nav aria-label="Дни">
+    <ul class="pagination">
+        @for (int day = 1; day <= 7; day++)
+        {
+            string liClass = "page-item";
+
+            if (day == ViewBag.CurrDay)
+            {
+                liClass += " active";
+            }
+            else if (day > ViewBag.CurrDay)
+            {
+                liClass += " disabled";
+            }
+
+            <li class="@liClass">
+                <a class="page-link" asp-action="SeeAchievementsOfUser"
+                   asp-route-activeDay="@day"
+                   asp-route-currDay="@ViewBag.CurrDay"
+                   asp-route-userId="@ViewBag.UserId">
+                    @(day == 1 ? "День 1" : day.ToString())
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
+
 <h4>Участники:</h4>
 <ul>
     @foreach (var marathonParticipant in ViewBag.MarathonParticipants)
@@ -17,9 +44,9 @@
             @foreach (var usd in ViewBag.UsersDone)
             {
             <li>
-                <a asp-action="@usd.SeeAchievementsOfUser"
-                   asp-route-activeDay="@usd.CurrDay"
-                   asp-route-currDay="@usd.CurrDay"
+                <a asp-action="SeeAchievementsOfUser"
+                   asp-route-activeDay="@ViewBag.CurrDay"
+                   asp-route-currDay="@ViewBag.CurrDay"
                    asp-route-userId="@usd.UserId">
                     @usd.UserName
                 </a>
