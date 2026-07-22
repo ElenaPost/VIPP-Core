@@ -57,7 +57,7 @@
         <div>
             <div class="form-group row resume" style="display: none">
                 <div class="col-md-8">
-                    <input id="Id" type="hidden" value="@(ViewBag.Id == Guid.Empty ? "" : ViewBag.Id)" />
+                    <input id="Id" type="hidden" value />
                     <label for="Resume" class="control-label col-md-4 pl-md-0">Ваше резюме</label>
                     <textarea id="Resume" class="required form-control form-control-sm mr-md-0">@ViewBag.Resume</textarea>
                     <span class="required-field">Заполнение обязательно</span>
@@ -240,7 +240,7 @@
                         dataType: "json",
                         success: function (data) {
                             if (resumeId == "") {
-                                resumeIdField.val(data.Id);
+                                resumeIdField.val(data.id);
                             }
                         }
                     });
