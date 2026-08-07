@@ -8,13 +8,19 @@ namespace VIPP.Hubs
 {
 	public class FeedbackHub : Hub
 	{
-		public async Task AddFeedback(string text, string userId)
+		private static Dictionary<string, string> _connections = new();
+		public async Task RegisterUser(string userId)
 		{
-			await Clients.Client(userId).SendAsync("addFeedback", text);
+			await Groups.AddToGroupAsync(Context.ConnectionId, userId);
+        }
+
+        public async Task AddFeedback(string text, string userId)
+		{
+			await Clients.Group(userId).SendAsync("addFeedback", text);
 		}
 		public async Task AddFinalFeedback(string text, string userId)
 		{
-			await Clients.Client(userId).SendAsync("addFinalFeedback", text);
+			await Clients.Group(userId).SendAsync("addFinalFeedback", text);
 		}
 	}
 }

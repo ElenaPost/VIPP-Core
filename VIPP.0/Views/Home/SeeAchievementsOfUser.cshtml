@@ -89,26 +89,31 @@
     }
 }
 
-@section scripts
-{
+@section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
 
-            var connection = new sign
-            $("#Send").on("click", function (e) {
-                e.preventDefault();
-                var text = $(".feedback").val();
-                connection.invoke("AddFeedback", text, @ViewBag.UserId)
-                .catch(err => console.Error(err));
-                sendFeadback($("#Id"), text, @ViewBag.ActiveDay);
-            });
+            var connection = new signalR.HubConnectionBuilder().withUrl("/feedbackHub").build();
 
-            $("#FinalSend").on("click", function (e) {
-                e.preventDefault();
-                var text = $(".finalFeedback").val();
-                connection.invoke("AddFinalFeedback", text, @ViewBag.UserId)
-                .catch(err => console.Error(err));
-                sendFeadback($("#FinalId"), text, 8);
+            connection.start().then(() => {
+                connection.invoke("RegisterUser", "@ViewBag.UserId");
+
+                $("#Send").on("click", function (e) {
+                    e.preventDefault();
+                    var text = $(".feedback").val();
+
+                    connection.invoke("AddFeedback", text, "@ViewBag.UserId")
+                    .catch(err => console.error("ошибка соединения: " + err));
+                    sendFeadback($("#Id"), text, @ViewBag.ActiveDay);
+                });
+
+                $("#FinalSend").on("click", function (e) {
+                    e.preventDefault();
+                    var text = $(".finalFeedback").val();
+                    connection.invoke("AddFinalFeedback", text, "@ViewBag.UserId")
+                    .catch(err => console.error("ошибка соединения: " + err));
+                    sendFeadback($("#FinalId"), text, 8);
+                });
             });
 
             function sendFeadback(feedbackIdField, feedback, day) {
@@ -127,7 +132,6 @@
                         if (feedbackId == "" && data !== null) {
                             feedbackIdField.val(data.Id);
                         }
-                        console.log("ok");
                     }
                 });
             }

@@ -122,7 +122,7 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-
+            console.log("userId: " + "@ViewBag.UserId");
             var activeDay = @ViewBag.ActiveDay;
 
             function highlightRequired(textField) {
@@ -183,7 +183,6 @@
 
                 var divAchCount = $(".achievement").length;
                 var achIndex = $(".achievement").index($(this).parents("div.form-group:first"));
-                console.log($(".achievement").index($(this).parents("div.form-group:first")) + " - " + divAchCount);
 
                 if (divAchCount < 100) {
                     if (achIndex == divAchCount - 2) {
@@ -259,12 +258,18 @@
                 changeHandler(event);
             });
 
+            var connection = new signalR.HubConnectionBuilder().withUrl("/feedbackHub").build();
+
             connection.on("addFeedback", function (text) {
-                $("#Feedback").empty().append("<p>" + text + "</p>");
+                $("#Feedback p").empty().append(text);
             });
 
             connection.on("addFinalFeedback", function (text) {
-                $("#FinalFeedback").empty().append("<p>" + text + "</p>");
+                $("#FinalFeedback p").empty().append(text);
+            });
+
+            connection.start().then(() => {
+                connection.invoke("RegisterUser", "@ViewBag.UserId");
             });
         });
     </script>

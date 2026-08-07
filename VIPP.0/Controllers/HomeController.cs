@@ -294,6 +294,7 @@ namespace VIPP.Controllers
 					selfEstimationFeedbackToUser.Feedback = feedback;
 					_context.Entry(selfEstimationFeedbackToUser).State = EntityState.Modified;
 					await _context.SaveChangesAsync();
+					return Json(selfEstimationFeedbackToUser);
                 }
 			}
 			catch (Exception exc)
