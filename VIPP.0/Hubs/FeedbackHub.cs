@@ -8,7 +8,6 @@ namespace VIPP.Hubs
 {
 	public class FeedbackHub : Hub
 	{
-		private static Dictionary<string, string> _connections = new();
 		public async Task RegisterUser(string userId)
 		{
 			await Groups.AddToGroupAsync(Context.ConnectionId, userId);

@@ -7,21 +7,21 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">
+            <a class="nav-link text-light" asp-controller="Home" asp-action="Index">
                 Привет, @UserManager.GetUserName(User)!
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout">Выйти</a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Logout">Выйти</a>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Войти</a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Войти</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Зарегистрироваться</a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Зарегистрироваться</a>
         </li>
     }
 </ul>
