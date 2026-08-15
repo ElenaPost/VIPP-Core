@@ -1,5 +1,7 @@
-#!/bin/bash
+@echo off
+set /p msg=Enter message:
 git status
 git add .
-git commit -m "add docker-compose.yml"
+git commit -m "%msg%"
 git push origin main
+pause
