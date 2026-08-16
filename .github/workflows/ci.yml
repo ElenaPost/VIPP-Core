@@ -18,7 +18,7 @@ jobs:
       - run: dotnet restore
       - run: dotnet publish -c Release -o out
       - name: Check secret exists
-        run: echo "Secret length: ${#DOCKER_PASSWORD}"
+      - run: echo "Secret length: ${#DOCKER_PASSWORD}"
 
       - uses: docker/login-action@v3
         with:
