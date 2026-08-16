@@ -19,8 +19,14 @@ jobs:
       - run: dotnet publish -c Release -o out
 
       - name: Check secret exists
-        run: echo Secret length: ${{ secrets.DOCKER_PASSWORD }}
-
+        run: |
+            PASS="${{ secrets.DOCKER_PASSWORD }}"
+            if [ -z "$PASS" ]; then
+              echo "DOCKER_PASSWORD is empty!"
+              exit 1
+            else
+              echo "Secret length: ${#PASS}"
+            fi
       - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
