@@ -11,15 +11,15 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["VIPP.0/VIPP.csproj", "VIPP.0/"]
-RUN dotnet restore "VIPP.0/VIPP.csproj"
+COPY ["./VIPP.csproj", "."]
+RUN dotnet restore "./VIPP.csproj"
 COPY . .
-RUN dotnet build "VIPP.0/VIPP.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./VIPP.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "VIPP.0/VIPP.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./VIPP.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Этот этап используется в рабочей среде или при запуске из VS в обычном режиме (по умолчанию, когда конфигурация отладки не используется)
 FROM base AS final
