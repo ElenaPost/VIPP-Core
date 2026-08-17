@@ -26,3 +26,6 @@ packages/
 
 # Кэш
 *.cache
+
+# Секреты
+setup-secrets.ps1
