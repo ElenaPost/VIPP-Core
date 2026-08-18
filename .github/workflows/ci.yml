@@ -38,7 +38,9 @@ jobs:
       - name: Deploy with docker compose
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-pwd
+            PROJ_DIR=/home/olena/
+            cd $PROJ_DIR
+            pwd
             docker pull elenapost/vipp:latest
-            docker compose -f /home/olena/docker-compose.yml up -d
+            docker compose up -d
           EOF
