@@ -93,10 +93,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-                    console.log("SERVER VERSION", new Date());
-        console.log("userId:", "@ViewBag.UserId");
-        console.log("day:", day);
-
             var connection = new signalR.HubConnectionBuilder().withUrl("/feedbackHub").build();
 
             connection.start().then(() => {
@@ -139,13 +135,6 @@
                     }
                 });
             }
-
-            // $("ul.pagination a:contains(" + @ViewBag.ActiveDay + ")").parent("li").addClass("active");
-            // for (var i = @ViewBag.CurrDay + 1; i < 8; i++) {
-            //     var link = $("ul.pagination a:contains(" + i + ")");
-            //     link.attr("href", "#");
-            //     link.parent("li").addClass("disabled");
-            //}
         });
     </script>
 }
