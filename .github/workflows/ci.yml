@@ -16,9 +16,11 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore .NET tools
+        working-directory: VIPP.0
         run: dotnet tool restore
 
       - name: Restore LibMan libraries
+        working-directory: VIPP.0
         run: dotnet tool run libman restore
       
       - run: dotnet restore
