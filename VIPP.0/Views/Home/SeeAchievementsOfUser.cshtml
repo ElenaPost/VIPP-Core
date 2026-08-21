@@ -93,6 +93,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+                    console.log("SERVER VERSION", new Date());
+        console.log("userId:", "@ViewBag.UserId");
+        console.log("day:", day);
+
             var connection = new signalR.HubConnectionBuilder().withUrl("/feedbackHub").build();
 
             connection.start().then(() => {
