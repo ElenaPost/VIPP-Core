@@ -15,8 +15,13 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Restore LibMan libraries
+        run: dotnet tool run libman restore
+      
       - run: dotnet restore
-      - run: dotnet libman restore
       - run: dotnet publish -c Release -o out
 
       - uses: docker/login-action@v3
