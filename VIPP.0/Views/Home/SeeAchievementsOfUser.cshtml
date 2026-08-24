@@ -96,7 +96,6 @@
             var connection = new signalR.HubConnectionBuilder().withUrl("/feedbackHub").build();
 
             connection.start().then(() => {
-                connection.invoke("RegisterUser", "@ViewBag.UserId");
 
                 $("#Send").on("click", function (e) {
                     e.preventDefault();
@@ -114,7 +113,11 @@
                     .catch(err => console.error("ошибка соединения: " + err));
                     sendFeadback($("#FinalId"), text, 8);
                 });
+            }).catch(err => {
+                console.error("SignalR connection failed:", err);
             });
+
+            connection.onclose((error) => console.error("SignalR disconnected:", error));
 
             function sendFeadback(feedbackIdField, feedback, day) {
                 var feedbackId = feedbackIdField.val();

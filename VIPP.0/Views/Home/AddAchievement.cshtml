@@ -270,6 +270,8 @@
 
             connection.start().then(() => {
                 connection.invoke("RegisterUser", "@ViewBag.UserId");
+            }).catch(err => {
+                console.error("SignalR connection failed:", err);
             });
         });
     </script>
